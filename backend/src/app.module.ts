@@ -4,6 +4,7 @@ import { LoggerModule, Params } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { config } from './config';
+import { TodosModule } from './todos/todos.module';
 
 @Module({
   imports: [
@@ -19,14 +20,13 @@ import { config } from './config';
         const pinoParams: Params = {
           pinoHttp: {
             transport:
-              config.get<string>('env') === 'local'
-                ? { target: 'pino-pretty' }
-                : undefined,
+              config.get<string>('env') === 'local' ? { target: 'pino-pretty' } : undefined,
           },
         };
         return pinoParams;
       },
     }),
+    TodosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
