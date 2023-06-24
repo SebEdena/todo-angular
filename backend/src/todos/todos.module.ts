@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DrizzleService } from 'src/drizzle/drizzle.service';
+import { DrizzleService } from '../drizzle/drizzle.service';
 import { TodosController } from './todos.controller';
 import { TodosService } from './todos.service';
 
 @Module({
-  imports: [DrizzleService],
   controllers: [TodosController],
-  providers: [TodosService]
+  providers: [TodosService, DrizzleService],
 })
 export class TodosModule {}

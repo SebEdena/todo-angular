@@ -8,6 +8,13 @@
       "when": 1687097628781,
       "tag": "0000_todos",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1687615009777,
+      "tag": "0001_default_uuid",
+      "breakpoints": true
     }
   ]
 }

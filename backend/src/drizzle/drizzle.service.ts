@@ -1,15 +1,17 @@
-import { Injectable } from "@nestjs/common";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { todos } from "lib/dist/models";
-import postgres from "postgres";
-import { config } from "src/config";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import { todos } from 'lib/dist/models';
+import postgres from 'postgres';
 
 @Injectable()
 export class DrizzleService {
-    private pool = postgres(config().databaseUrl, { max: 10 });
-    private drizzleDb = drizzle(this.pool, { schema: { todos } });
+  constructor(private config: ConfigService) {}
 
-    get db(): typeof this.drizzleDb {
-        return this.drizzleDb;
-    }
+  private pool = postgres(this.config.get<string>('databaseUrl'), { max: 10 });
+  private drizzleDb = drizzle(this.pool, { schema: { todos } });
+
+  get db(): typeof this.drizzleDb {
+    return this.drizzleDb;
+  }
 }

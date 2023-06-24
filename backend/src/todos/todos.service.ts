@@ -1,32 +1,47 @@
 import { Injectable } from '@nestjs/common';
+import { desc, eq, sql } from 'drizzle-orm';
 import { todos } from 'lib/dist/models';
-import { WriteTodoDto } from 'lib/dist/schemas';
-import { DrizzleService } from 'src/drizzle/drizzle.service';
+import { CreateTodoDto, UpdateTodoDto } from 'lib/dist/schemas';
+import { DrizzleService } from '../drizzle/drizzle.service';
+import { ResourceQuery, buildPage } from '../utils';
 
 @Injectable()
 export class TodosService {
+  constructor(private drizzle: DrizzleService) {}
 
-  constructor(private drizzle: DrizzleService) {
-    drizzle.db.select().from(todos);
-  }
-  
-  create(createTodoDto: WriteTodoDto) {
-    return 'This action adds a new todo';
+  async create(createTodoDto: CreateTodoDto) {
+    return (await this.drizzle.db.insert(todos).values(createTodoDto).returning())[0];
   }
 
-  findAll() {
-    return `This action returns all todos`;
+  async findAll(params: ResourceQuery) {
+    return buildPage(
+      await this.drizzle.db
+        .select({
+          item: todos,
+          total: sql<number>`count(*) OVER()`.mapWith((str) => parseInt(str)),
+        })
+        .from(todos)
+        .orderBy(desc(todos.updatedAt))
+        .offset(params.skip)
+        .limit(params.limit),
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+  async findOne(id: string) {
+    return await this.drizzle.db.select().from(todos).where(eq(todos.id, id)).limit(1);
   }
 
-  update(id: number, updateTodoDto: WriteTodoDto) {
-    return `This action updates a #${id} todo`;
+  async update(id: string, updateTodoDto: UpdateTodoDto) {
+    return (
+      await this.drizzle.db
+        .update(todos)
+        .set({ ...updateTodoDto, updatedAt: new Date() })
+        .where(eq(todos.id, id))
+        .returning()
+    )[0];
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  async remove(id: string) {
+    return (await this.drizzle.db.delete(todos).where(eq(todos.id, id)).returning())[0];
   }
 }

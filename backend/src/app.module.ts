@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { LoggerModule, Params } from 'nestjs-pino';
+import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { config } from './config';
@@ -29,6 +31,13 @@ import { TodosModule } from './todos/todos.module';
     TodosModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe,
+    },
+    { provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor },
+    AppService,
+  ],
 })
 export class AppModule {}
