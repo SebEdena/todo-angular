@@ -1,2 +1,2 @@
-export * as models from './models/index.js';
-export * as schemas from './schemas/index.js';
+export * from './models/index.js';
+export * from './schemas/index.js';

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { desc, eq, sql } from 'drizzle-orm';
-import { todos } from 'lib/dist/models';
-import { CreateTodoDto, UpdateTodoDto } from 'lib/dist/schemas';
+import { todos } from 'lib/models';
+import { CreateTodoDto, UpdateTodoDto } from 'lib/schemas';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { ResourceQuery, buildPage } from '../utils';
 

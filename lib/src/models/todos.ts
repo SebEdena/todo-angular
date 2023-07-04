@@ -1,5 +1,14 @@
 import { InferModel, sql } from 'drizzle-orm';
-import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  type PgTableWithColumns,
+  type TableConfig,
+} from 'drizzle-orm/pg-core';
+type unused = PgTableWithColumns<TableConfig>;
 
 export const todoStatusEnum = pgEnum('todoStatus', ['todo', 'doing', 'done']);
 

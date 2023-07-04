@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { createZodDto } from 'nestjs-zod';
-import { todos } from '../models/todos';
+import { todos } from '../models/todos.js';
 
 export const readTodoSchema = createSelectSchema(todos);
 export const createTodoSchema = createInsertSchema(todos)
