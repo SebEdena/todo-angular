@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { drizzle } from 'drizzle-orm/postgres-js';
-import { todos } from 'lib/dist/models';
+import { todos } from 'lib/models';
 import postgres from 'postgres';
 
 @Injectable()

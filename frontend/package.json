@@ -1,15 +1,15 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "prepare": "(cd ../lib ; npm i; npm run build) && relative-deps"
-  },
   "private": true,
+  "scripts": {
+    "build": "ng build",
+    "ng": "ng",
+    "prepare": "(cd ../lib ; npm i; npm run build) && relative-deps",
+    "start": "ng serve",
+    "test": "ng test",
+    "watch": "ng build --watch --configuration development"
+  },
   "dependencies": {
     "@angular/animations": "^16.1.0",
     "@angular/common": "^16.1.0",
@@ -20,8 +20,14 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "@ngneat/query": "^1.0.0-beta.19",
+    "drizzle-orm": "^0.27.0",
+    "drizzle-zod": "^0.4.4",
+    "lib": "^5.0.1",
+    "nestjs-pino": "^3.3.0",
+    "nestjs-zod": "^2.3.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "zod": "^3.21.4",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

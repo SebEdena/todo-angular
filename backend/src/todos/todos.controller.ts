@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { CreateTodoDto, ReadTodoDto, UpdateTodoDto, readTodoSchema } from 'lib/dist/schemas';
+import { CreateTodoDto, ReadTodoDto, UpdateTodoDto, readTodoSchema } from 'lib/schemas';
 import { ZodSerializerDto } from 'nestjs-zod';
 import { PageDto, ResourceQuery } from '../utils';
 import { TodosService } from './todos.service';

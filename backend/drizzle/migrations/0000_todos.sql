@@ -5,7 +5,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "todos" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
 	"title" text NOT NULL,
 	"description" text NOT NULL,
 	"status" "todoStatus" DEFAULT 'todo' NOT NULL,
