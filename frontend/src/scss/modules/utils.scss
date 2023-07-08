@@ -1,0 +1,38 @@
+@use 'sass:math';
+@use '../variables' as *;
+
+@each $theme, $map in $themes {
+  .#{$theme} {
+    @each $key, $submap in $map {
+      .bg-#{$key} {
+        background-color: #{map-get(map-get($themes, $theme), '#{$key}')};
+      }
+      .color-#{$key} {
+        color: #{map-get(map-get($themes, $theme), '#{$key}')};
+      }
+    }
+  }
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+@for $i from 1 through 80 {
+  .m-#{$i} {
+    margin: math.div($i, 10) + rem;
+  }
+
+  .p-#{$i} {
+    padding: math.div($i, 10) + rem;
+  }
+
+  .py-#{$i} {
+    padding-top: math.div($i, 10) + rem;
+    padding-bottom: math.div($i, 10) + rem;
+  }
+
+  .pt-#{$i} {
+    padding-top: math.div($i, 10) + rem;
+  }
+}

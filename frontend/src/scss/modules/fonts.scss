@@ -1,0 +1,38 @@
+@use 'sass:math';
+
+// A mixin for writing @font-face rules in SASS.
+@mixin font-face($name, $file, $weight, $style) {
+  @font-face {
+    font-family: '#{$name}';
+    src: url('/assets/fonts/#{$file}.woff2');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@include font-face(Outfit, Outfit-Regular, normal, normal);
+@include font-face(Outfit, Outfit-Medium, 500, normal);
+@include font-face(Outfit, Outfit-Semibold, 600, normal);
+@include font-face(Outfit, Outfit-Bold, bold, normal);
+
+@for $i from 1 through 60 {
+  .font-size-#{$i} {
+    font-size: #{math.div($i, 10)} + 'rem' !important;
+  }
+}
+
+.font-regular {
+  font-weight: normal;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: normal;
+}

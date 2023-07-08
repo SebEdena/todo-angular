@@ -1,0 +1,16 @@
+@use '../variables' as *;
+
+$current-theme: map-get($themes, light);
+
+@each $theme, $map in $themes {
+  .#{$theme} {
+    $current-theme: map-get($themes, $theme) !global;
+    @each $key, $submap in $map {
+      --#{$key}: #{map-get(map-get($themes, $theme), '#{$key}')};
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($current-theme, $key);
+}

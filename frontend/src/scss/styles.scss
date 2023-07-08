@@ -1,0 +1,21 @@
+@use 'reset';
+@use 'modules/theme';
+@use 'modules/fonts';
+@use 'modules/icons';
+@use 'modules/utils';
+
+html,
+body {
+  color: var(--font);
+  background-color: var(--neutral);
+  font-family: Outfit, Arial;
+  font-weight: normal;
+}
+
+button {
+  border: none;
+}
+
+:root.theme-loaded * {
+  transition: background-color 1s, color;
+}

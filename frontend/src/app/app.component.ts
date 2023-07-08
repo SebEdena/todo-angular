@@ -1,14 +1,28 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './components/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div>
+      <app-header />
+      <main>
+        <router-outlet />
+      </main>
+    </div>
+  `,
+  styles: [
+    `
+      div {
+        margin: auto;
+        width: 80%;
+      }
+    `,
+  ],
+  imports: [CommonModule, RouterOutlet, HeaderComponent],
 })
-export class AppComponent {
-  title = 'frontend';
-}
+export class AppComponent {}

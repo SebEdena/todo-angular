@@ -1,0 +1,24 @@
+@use 'sass:math';
+$icons: 'sun', 'moon';
+
+@mixin icon_size($width, $height) {
+  width: $width + rem;
+  height: $height + rem;
+  mask-size: $width + rem $height + rem !important;
+  mask-repeat: no-repeat;
+}
+
+@each $icon in $icons {
+  .icon-#{$icon} {
+    @include icon_size(1, 1);
+    display: block;
+    background-color: var(--font);
+    mask: url('./../../assets/icons/#{$icon}.svg');
+  }
+}
+
+@for $i from 1 through 50 {
+  .icon-size-#{$i} {
+    @include icon_size(#{math.div($i, 10)}, #{math.div($i, 10)});
+  }
+}
