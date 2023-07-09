@@ -6,23 +6,6 @@
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./models": {
-      "import": "./dist/models/index.esm.js",
-      "require": "./dist/models/index.cjs.js",
-      "types": "./dist/models/index.d.ts"
-    },
-    "./schemas": {
-      "import": "./dist/schemas/index.esm.js",
-      "require": "./dist/schemas/index.cjs.js",
-      "types": "./dist/schemas/index.d.ts"
-    }
-  },
   "files": [
     "dist/**/*"
   ],

@@ -20,8 +20,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "(cd ../lib ; npm i; npm run build) && relative-deps"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -32,10 +31,7 @@
     "@nestjs/platform-fastify": "^10.0.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.27.0",
-    "drizzle-zod": "^0.4.4",
-    "lib": "^5.0.1",
     "nestjs-pino": "^3.3.0",
-    "nestjs-zod": "^2.3.3",
     "pino-http": "^8.3.3",
     "postgres": "^3.3.5",
     "reflect-metadata": "^0.1.13",
@@ -87,8 +83,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "relativeDependencies": {
-    "lib": "../lib/dist"
   }
 }
