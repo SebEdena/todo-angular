@@ -1,7 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { CreateTodoDto, ReadTodoDto, UpdateTodoDto, readTodoSchema } from 'lib/schemas';
-import { ZodSerializerDto } from 'nestjs-zod';
-import { PageDto, ResourceQuery } from '../utils';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Todo } from '../models';
+import { CreateTodo, UpdateTodo } from '../schemas';
+import { FindParams } from '../utils/crud';
+import { FindParamsPipe } from '../utils/find-params.decorator';
+import { GetTodo, TodoInterceptor } from './todos.dependencies';
 import { TodosService } from './todos.service';
 
 @Controller('todos')
@@ -9,32 +21,30 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
-  @ZodSerializerDto(ReadTodoDto)
-  create(@Body() createTodoDto: CreateTodoDto) {
+  create(@Body() createTodoDto: CreateTodo) {
     return this.todosService.create(createTodoDto);
   }
 
   @Get()
-  @ZodSerializerDto(PageDto(readTodoSchema))
-  findAll(@Query() params: ResourceQuery) {
-    return this.todosService.findAll(params);
+  findAll(@Query(ValidationPipe, FindParamsPipe<Todo>) params: Partial<FindParams<Todo>>) {
+    return this.todosService.find(params);
   }
 
-  @Get(':id')
-  @ZodSerializerDto(ReadTodoDto)
-  findOne(@Param('id') id: string) {
-    return this.todosService.findOne(id);
+  @Get(':todoId')
+  @UseInterceptors(TodoInterceptor)
+  findOne(@GetTodo() todo: Todo) {
+    return todo;
   }
 
   @Patch(':id')
-  @ZodSerializerDto(ReadTodoDto)
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todosService.update(id, updateTodoDto);
+  @UseInterceptors(TodoInterceptor)
+  update(@GetTodo() todo: Todo, @Body() updateTodoDto: UpdateTodo) {
+    return this.todosService.update(todo, updateTodoDto);
   }
 
   @Delete(':id')
-  @ZodSerializerDto(ReadTodoDto)
-  remove(@Param('id') id: string) {
-    return this.todosService.remove(id);
+  @UseInterceptors(TodoInterceptor)
+  remove(@GetTodo() todo: Todo) {
+    return this.todosService.delete(todo);
   }
 }

@@ -1,0 +1,22 @@
+.form-field {
+  label {
+    display: block;
+  }
+
+  input {
+    outline: transparent;
+    background-color: transparent;
+    position: relative;
+    border-radius: 10px;
+    padding: 0 5px;
+    margin: 5px;
+    border: none;
+    box-shadow: 0px 0px 0px 2px var(--primary);
+    color: inherit;
+    transition: box-shadow 0.6s linear;
+
+    &:focus {
+      box-shadow: 0px 0px 0px 5px var(--primary);
+    }
+  }
+}

@@ -1,11 +1,11 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { LoggerModule, Params } from 'nestjs-pino';
-import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { config } from './config';
+import { Todo } from './models';
 import { TodosModule } from './todos/todos.module';
 
 @Module({
@@ -14,6 +14,14 @@ import { TodosModule } from './todos/todos.module';
       cache: true,
       isGlobal: true,
       load: [config],
+    }),
+    MikroOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ...config.get('orm'),
+        entities: [Todo],
+      }),
     }),
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
@@ -31,13 +39,6 @@ import { TodosModule } from './todos/todos.module';
     TodosModule,
   ],
   controllers: [AppController],
-  providers: [
-    {
-      provide: APP_PIPE,
-      useClass: ZodValidationPipe,
-    },
-    { provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor },
-    AppService,
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

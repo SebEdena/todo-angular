@@ -1,0 +1,73 @@
+import {
+  EntityData,
+  EntityName,
+  FilterQuery,
+  GetRepository,
+  QueryOrder,
+  QueryOrderMap,
+  RequiredEntityData,
+} from '@mikro-orm/core';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { AuditBase } from 'src/models';
+import { MAX_ITEMS_PER_PAGE } from './utils';
+
+export type FindParams<Entity> = {
+  filter: FilterQuery<Entity>;
+  orderBy: QueryOrderMap<Entity>;
+  offset: number;
+  limit: number;
+};
+
+export class CrudService<
+  Entity extends AuditBase,
+  Create extends RequiredEntityData<Entity>,
+  Update extends EntityData<Entity>,
+> {
+  protected repo: GetRepository<Entity, EntityRepository<Entity>>;
+
+  private defaultFindParams: FindParams<Entity> = {
+    filter: <FilterQuery<Entity>>{},
+    orderBy: <QueryOrderMap<Entity>>{
+      id: QueryOrder.ASC,
+    },
+    offset: 0,
+    limit: MAX_ITEMS_PER_PAGE,
+  };
+
+  constructor(protected em: EntityManager, protected name: EntityName<Entity>) {
+    this.repo = em.repo(name);
+  }
+
+  async create(create: Create): Promise<Entity> {
+    const entity = this.repo.create(create);
+    await this.em.persistAndFlush(entity);
+    return entity;
+  }
+
+  async find(params: Partial<FindParams<Entity>> = {}): Promise<Entity[]> {
+    const { filter, offset, limit, orderBy } = { ...this.defaultFindParams, ...params };
+    return await this.repo.find(filter, { offset, limit, orderBy });
+  }
+
+  async findOne(filter: FilterQuery<Entity> = {}): Promise<Entity | null> {
+    return await this.repo.findOne(filter);
+  }
+
+  async findOneById(id: string): Promise<Entity | null> {
+    return await this.findOne({ id } as FilterQuery<Entity>);
+  }
+
+  async update(entity: Entity, update: Update) {
+    return await this.repo.upsert({ ...entity, ...update });
+  }
+
+  async delete(entity: Entity) {
+    entity.deletedAt = new Date();
+    return await this.repo.upsert(entity);
+  }
+
+  async undelete(entity: Entity) {
+    entity.deletedAt = undefined;
+    return await this.repo.upsert(entity);
+  }
+}

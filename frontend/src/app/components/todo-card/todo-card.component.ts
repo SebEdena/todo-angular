@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ReadTodoDto } from 'lib/schemas';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { ReadTodo } from 'src/app/models/todos';
 
 @Component({
   selector: 'app-todo-card',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <article class="bg-neutral-accent p-10s">
+    <article (click)="open()">
       <div class="bg-neutral-accent p-10">
         <h2 class="title font-size-12">{{ todo.title }}</h2>
         <p class="description">{{ todo.description }}</p>
@@ -59,5 +60,11 @@ import { ReadTodoDto } from 'lib/schemas';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoCardComponent {
-  @Input({ required: true }) todo!: ReadTodoDto;
+  private router = inject(Router);
+
+  @Input({ required: true }) todo!: ReadTodo;
+
+  open() {
+    this.router.navigate(['todos', this.todo.id]);
+  }
 }

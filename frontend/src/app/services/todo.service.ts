@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { ReadTodoDto } from 'lib';
 import { BehaviorSubject, tap } from 'rxjs';
-import { Page } from '../models/utils';
+import { ReadTodo } from '../models/todos';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +9,17 @@ import { Page } from '../models/utils';
 export class TodoService {
   private http = inject(HttpClient);
 
-  todos$ = new BehaviorSubject<ReadTodoDto[]>([]);
+  todos$ = new BehaviorSubject<ReadTodo[]>([]);
   todos = this.todos$.asObservable();
 
   loadTodos() {
     this.http
-      .get<Page<ReadTodoDto>>('/todos')
-      .pipe(tap((page) => this.todos$.next([...this.todos$.value, ...page.items])))
+      .get<ReadTodo[]>('/todos', { params: { orderBy: JSON.stringify({ updatedAt: 'DESC' }) } })
+      .pipe(tap((todos) => this.todos$.next([...this.todos$.value, ...todos])))
       .subscribe();
+  }
+
+  getTodo(id: string) {
+    return this.todos$.value.find((todo) => todo.id === id);
   }
 }

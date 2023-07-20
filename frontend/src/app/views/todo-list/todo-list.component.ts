@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction, inject } from '@angular/core';
-import { ReadTodoDto } from 'lib';
+import { ReadTodo } from 'src/app/models/todos';
 import { TodoService } from 'src/app/services/todo.service';
 import { TodoCardComponent } from '../../components/todo-card/todo-card.component';
 
@@ -34,7 +34,7 @@ export class TodoListComponent implements OnInit {
     this.todosService.loadTodos();
   }
 
-  trackTodos: TrackByFunction<ReadTodoDto> = (_index: number, item: ReadTodoDto) => {
+  trackTodos: TrackByFunction<ReadTodo> = (_index: number, item: ReadTodo) => {
     return item.id;
   };
 }
