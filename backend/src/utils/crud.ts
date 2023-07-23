@@ -9,7 +9,7 @@ import {
 } from '@mikro-orm/core';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { AuditBase } from 'src/models';
-import { MAX_ITEMS_PER_PAGE } from './utils';
+import { Page } from './utils';
 
 export type FindParams<Entity> = {
   filter: FilterQuery<Entity>;
@@ -31,7 +31,7 @@ export class CrudService<
       id: QueryOrder.ASC,
     },
     offset: 0,
-    limit: MAX_ITEMS_PER_PAGE,
+    limit: undefined,
   };
 
   constructor(protected em: EntityManager, protected name: EntityName<Entity>) {
@@ -44,9 +44,16 @@ export class CrudService<
     return entity;
   }
 
-  async find(params: Partial<FindParams<Entity>> = {}): Promise<Entity[]> {
+  async find(params: Partial<FindParams<Entity>> = {}): Promise<Page<Entity>> {
     const { filter, offset, limit, orderBy } = { ...this.defaultFindParams, ...params };
-    return await this.repo.find(filter, { offset, limit, orderBy });
+    const [items, total] = await this.em
+      .qb(this.name)
+      .where(filter)
+      .offset(offset)
+      .limit(limit)
+      .orderBy(orderBy)
+      .getResultAndCount();
+    return { items, total };
   }
 
   async findOne(filter: FilterQuery<Entity> = {}): Promise<Entity | null> {

@@ -13,10 +13,10 @@ export class FindParamsPipe<E> implements PipeTransform {
       params.filter = JSON.parse(value.filter);
     }
     if (value.offset) {
-      params.offset = value.offset;
+      params.offset = Number.parseInt(value.offset);
     }
     if (value.limit) {
-      params.offset = value.limit;
+      params.limit = Number.parseInt(value.limit);
     }
     log(params);
     return params;

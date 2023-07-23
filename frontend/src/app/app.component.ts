@@ -8,7 +8,7 @@ import { HeaderComponent } from './components/header/header.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div>
+    <div ng-scroll>
       <app-header />
       <main>
         <router-outlet />

@@ -18,6 +18,16 @@
   background-color: transparent;
 }
 
+.w-full {
+  width: 100%;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @for $i from 1 through 80 {
   .m-#{$i} {
     margin: math.div($i, 10) + rem;
@@ -34,5 +44,9 @@
 
   .pt-#{$i} {
     padding-top: math.div($i, 10) + rem;
+  }
+
+  .pb-#{$i} {
+    padding-bottom: math.div($i, 10) + rem;
   }
 }

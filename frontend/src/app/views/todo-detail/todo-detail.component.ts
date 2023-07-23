@@ -55,9 +55,9 @@ export class TodoDetailComponent implements OnChanges {
   });
   todo!: CreateTodo | UpdateTodo;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes['id'] && this.id) {
-      const todo = this.todoService.getTodo(this.id);
+      const todo = await this.todoService.get(this.id);
       if (todo) {
         this.todo = todo;
       } else {
