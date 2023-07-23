@@ -36,13 +36,13 @@ export class TodosController {
     return todo;
   }
 
-  @Patch(':id')
+  @Patch(':todoId')
   @UseInterceptors(TodoInterceptor)
   update(@GetTodo() todo: Todo, @Body() updateTodoDto: UpdateTodo) {
     return this.todosService.update(todo, updateTodoDto);
   }
 
-  @Delete(':id')
+  @Delete(':todoId')
   @UseInterceptors(TodoInterceptor)
   remove(@GetTodo() todo: Todo) {
     return this.todosService.delete(todo);

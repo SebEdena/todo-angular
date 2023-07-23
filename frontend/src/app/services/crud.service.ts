@@ -40,26 +40,28 @@ export abstract class CrudService<Read extends { id: string }, Create, Update> {
   }
 
   private refresh() {
-    this.updateState({ loading: true });
-    this.http
-      .get<Page<Read>>(this.baseUrl, {
-        params: q({
-          ...this.loadParams,
-          limit: this.items().length,
-        }),
-      })
-      .subscribe({
-        next: ({ items, total }) => {
-          this.updateState({
-            items: items,
-            loading: false,
-            total,
-          });
-        },
-        error: (err: any) => {
-          this.updateState({ error: err.message, loading: false });
-        },
-      });
+    if (this.items().length) {
+      this.updateState({ loading: true });
+      this.http
+        .get<Page<Read>>(this.baseUrl, {
+          params: q({
+            ...this.loadParams,
+            limit: this.items().length,
+          }),
+        })
+        .subscribe({
+          next: ({ items, total }) => {
+            this.updateState({
+              items: items,
+              loading: false,
+              total,
+            });
+          },
+          error: (err: any) => {
+            this.updateState({ error: err.message, loading: false });
+          },
+        });
+    }
   }
 
   loadAll() {

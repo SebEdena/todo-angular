@@ -14,7 +14,7 @@ export class TodoInterceptor extends IdToValueInterceptor<Todo, CreateTodo, Read
   }
 
   protected getId(request: any): string {
-    return request.params.roomId;
+    return request.params.todoId;
   }
 
   protected setValue(request: any, entity: Todo): void {

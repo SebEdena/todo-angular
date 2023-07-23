@@ -3,7 +3,10 @@
     display: block;
   }
 
-  input {
+  input,
+  textarea,
+  select {
+    width: 100%;
     outline: transparent;
     background-color: transparent;
     position: relative;
@@ -18,5 +21,9 @@
     &:focus {
       box-shadow: 0px 0px 0px 5px var(--primary);
     }
+  }
+
+  option {
+    background-color: var(--neutral-accent);
   }
 }

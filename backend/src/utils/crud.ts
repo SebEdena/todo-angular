@@ -65,16 +65,20 @@ export class CrudService<
   }
 
   async update(entity: Entity, update: Update) {
-    return await this.repo.upsert({ ...entity, ...update });
+    const result = this.repo.assign(entity, update);
+    await this.em.flush();
+    return result;
   }
 
   async delete(entity: Entity) {
     entity.deletedAt = new Date();
-    return await this.repo.upsert(entity);
+    await this.em.flush();
+    return entity;
   }
 
   async undelete(entity: Entity) {
     entity.deletedAt = undefined;
-    return await this.repo.upsert(entity);
+    await this.em.flush();
+    return entity;
   }
 }
