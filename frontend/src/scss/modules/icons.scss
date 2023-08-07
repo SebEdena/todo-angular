@@ -1,5 +1,5 @@
 @use 'sass:math';
-$icons: 'sun', 'moon';
+$icons: 'sun', 'moon', 'chevron-down';
 
 @mixin icon_size($width, $height) {
   width: $width + rem;

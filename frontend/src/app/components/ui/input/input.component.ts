@@ -1,19 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ClickOutsideDirective } from 'src/app/utils/click-outside.directive';
+import { FormFieldComponent } from '../form-field/form-field.component';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <p>
-      input works!
-    </p>
-  `,
-  styles: [
+  imports: [CommonModule, FormsModule, ClickOutsideDirective],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true,
+    },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: ` <p>input works!</p> `,
+  styleUrls: ['../ui.scss'],
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputComponent {
-
-}
+export class InputComponent extends FormFieldComponent<string> {}
