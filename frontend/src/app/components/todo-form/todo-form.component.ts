@@ -10,33 +10,41 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
 import { TodoService } from 'src/app/services/todo.service';
+import { ButtonComponent } from '../ui/button/button.component';
+import { InputComponent } from '../ui/input/input.component';
 import { SelectComponent } from '../ui/select/select.component';
+import { TextareaComponent } from '../ui/textarea/textarea.component';
 
 @Component({
   selector: 'app-todo-form',
   standalone: true,
   template: `
     <form [formGroup]="todoForm" (submit)="saveForm()">
-      <div class="form-field">
-        <label for="title">Title</label>
-        <input id="title" name="title" formControlName="title" />
-      </div>
-      <div class="form-field">
-        <label for="description">Description</label>
-        <textarea id="description" name="description" formControlName="description"></textarea>
-      </div>
+      <app-input formControlName="title" label="Title" name="title"></app-input>
+      <app-textarea
+        formControlName="description"
+        label="Description"
+        name="description"
+      ></app-textarea>
       <app-select
         [options]="todoStatusList"
         formControlName="status"
         label="Status"
         name="status"
       ></app-select>
-      <input type="submit" [value]="id ? 'Update' : 'Create'" />
+      <app-button type="submit">{{ id ? 'Update' : 'Create' }}</app-button>
     </form>
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, SelectComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SelectComponent,
+    InputComponent,
+    TextareaComponent,
+    ButtonComponent,
+  ],
 })
 export class TodoFormComponent implements OnChanges {
   private fb = inject(FormBuilder);
