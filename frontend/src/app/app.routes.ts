@@ -13,6 +13,10 @@ export const routes: Routes = [
     component: TodoListComponent,
   },
   {
+    path: 'todos/new',
+    component: TodoDetailComponent,
+  },
+  {
     path: 'todos/:id',
     component: TodoDetailComponent,
   },

@@ -19,7 +19,7 @@ export abstract class CrudService<Read extends { id: string }, Create, Update> {
 
   private itemsState = signal<ItemState<Read>>({
     items: [],
-    loading: true,
+    loading: false,
     error: undefined,
     total: undefined,
   });
