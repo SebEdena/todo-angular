@@ -19,23 +19,48 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
   selector: 'app-todo-form',
   standalone: true,
   template: `
-    <form [formGroup]="todoForm" (submit)="saveForm()">
-      <app-input formControlName="title" label="Title" name="title"></app-input>
-      <app-textarea
-        formControlName="description"
-        label="Description"
-        name="description"
-      ></app-textarea>
-      <app-select
-        [options]="todoStatusList"
-        formControlName="status"
-        label="Status"
-        name="status"
-      ></app-select>
-      <app-button type="submit">{{ id ? 'Update' : 'Create' }}</app-button>
-    </form>
+    <div class="form-container">
+      <form class="bg-neutral" [formGroup]="todoForm" (submit)="saveForm()">
+        <app-input formControlName="title" label="Title" name="title"></app-input>
+        <app-textarea
+          formControlName="description"
+          label="Description"
+          name="description"
+        ></app-textarea>
+        <app-select
+          [options]="todoStatusList"
+          formControlName="status"
+          label="Status"
+          name="status"
+        ></app-select>
+        <app-button type="submit">{{ id ? 'Update' : 'Create' }}</app-button>
+      </form>
+    </div>
   `,
-  styles: [],
+  styles: [
+    `
+      .form-container {
+        background: var(--primary);
+        background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+
+        border-radius: 15px;
+        padding: 10px;
+      }
+
+      form {
+        display: flex;
+        flex-flow: column wrap;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      app-button {
+        margin-top: 5px;
+        align-self: flex-end;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
