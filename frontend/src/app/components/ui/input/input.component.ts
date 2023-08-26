@@ -17,7 +17,14 @@ import { FormFieldComponent } from '../form-field/form-field.component';
   template: `
     <div class="form-field">
       <label [for]="name">{{ label }}</label>
-      <input [type]="type" [id]="name" [name]="name" [(ngModel)]="value" [disabled]="disabled" />
+      <input
+        [type]="type"
+        [id]="name"
+        [name]="name"
+        [(ngModel)]="value"
+        [disabled]="disabled"
+        autocomplete="off"
+      />
     </div>
   `,
   styleUrls: ['../ui.scss'],

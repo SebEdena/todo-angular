@@ -28,12 +28,18 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
         border-radius: 10px;
         transition: all 0.2s ease-in-out !important;
 
-        &:hover {
-          background-color: var(--bg-color-light);
+        &:not(:disabled) {
+          &:hover {
+            background-color: var(--bg-color-light);
+          }
+
+          &:active {
+            background-color: var(--bg-color-lighter);
+          }
         }
 
-        &:active {
-          background-color: var(--bg-color-lighter);
+        &:disabled {
+          background-color: var(--grey);
         }
       }
     `,

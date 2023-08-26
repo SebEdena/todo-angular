@@ -12,6 +12,7 @@ import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
 import { TodoService } from 'src/app/services/todo.service';
 import { ButtonComponent } from '../ui/button/button.component';
 import { InputComponent } from '../ui/input/input.component';
+import { OptionComponent } from '../ui/select/option/option.component';
 import { SelectComponent } from '../ui/select/select.component';
 import { TextareaComponent } from '../ui/textarea/textarea.component';
 
@@ -27,13 +28,14 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
           label="Description"
           name="description"
         ></app-textarea>
-        <app-select
-          [options]="todoStatusList"
-          formControlName="status"
-          label="Status"
-          name="status"
-        ></app-select>
-        <app-button type="submit">{{ id ? 'Update' : 'Create' }}</app-button>
+        <app-select formControlName="status" label="Status" name="status">
+          <app-option *ngFor="let status of todoStatusList" [value]="status">{{
+            status.toUpperCase()
+          }}</app-option>
+        </app-select>
+        <app-button type="submit" [disabled]="todoForm.invalid">{{
+          id ? 'Update' : 'Create'
+        }}</app-button>
       </form>
     </div>
   `,
@@ -69,6 +71,7 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
     InputComponent,
     TextareaComponent,
     ButtonComponent,
+    OptionComponent,
   ],
 })
 export class TodoFormComponent implements OnChanges {

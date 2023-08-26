@@ -1,8 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  DestroyRef,
+  QueryList,
+  forwardRef,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, merge } from 'rxjs';
 import { ClickOutsideDirective } from 'src/app/utils/click-outside.directive';
 import { FormFieldComponent } from '../form-field/form-field.component';
+import { OptionComponent } from './option/option.component';
 
 @Component({
   selector: 'app-select',
@@ -26,25 +37,25 @@ import { FormFieldComponent } from '../form-field/form-field.component';
         <input
           readonly
           [disabled]="disabled"
+          [value]="currentOption?.optionContainer?.nativeElement?.innerHTML"
+          (focus)="!disabled && !dropdownOpen && openDropdown()"
+          #input
+        />
+        <input
+          style="display: none;"
+          readonly
+          disabled
           [(ngModel)]="value"
           [id]="name"
           [name]="name"
-          (focus)="!disabled && !dropdownOpen && openDropdown()"
         />
         <button class="icon" (click)="!disabled && !dropdownOpen && openDropdown()">
           <i class="icon-chevron-down icon-size-12"></i>
         </button>
         <div class="dropdown-ct">
-          <ul class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen">
-            <li
-              *ngFor="let o of options"
-              [ngClass]="{ selected: value === o }"
-              tabindex="0"
-              (click)="!disabled && select(o)"
-              role="option"
-              [innerHTML]="o"
-            ></li>
-          </ul>
+          <div class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen">
+            {{ options }}
+          </div>
         </div>
       </div>
     </div>
@@ -96,32 +107,30 @@ import { FormFieldComponent } from '../form-field/form-field.component';
         background: var(--neutral);
         border: 3px solid var(--primary);
         border-radius: 10px;
-        list-style: none;
         padding: 0;
         margin: 0;
-
-        li {
-          padding: 4px 16px;
-          cursor: pointer;
-          transition: none;
-
-          &.selected {
-            background: var(--primary);
-          }
-
-          &:hover {
-            background: var(--primary);
-          }
-        }
       }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent extends FormFieldComponent<string> {
-  @Input() options: string[] = [];
+export class SelectComponent<T> extends FormFieldComponent<T> {
+  @ContentChildren(OptionComponent, { descendants: true }) options!: QueryList<OptionComponent<T>>;
+
+  currentOption?: OptionComponent<T> = undefined;
 
   dropdownOpen = false;
+
+  private optionChange?: Observable<OptionComponent<T> | undefined>;
+  private destroyRef = inject(DestroyRef);
+
+  ngAfterContentInit() {
+    this.currentOption = this.options.find((opt) => Object.is(opt.value, this.value));
+    this.optionChange = merge(...this.options.map((optionCom) => optionCom.select.asObservable()));
+    this.optionChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((component) => {
+      this.select(component?.value);
+    });
+  }
 
   openDropdown() {
     this.dropdownOpen = true;
@@ -131,7 +140,7 @@ export class SelectComponent extends FormFieldComponent<string> {
     this.dropdownOpen = false;
   }
 
-  select(value: string) {
+  select(value?: T) {
     this.value = value;
     this.closeDropdown();
   }

@@ -1,20 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 @Component({
   template: ``,
 })
 export abstract class FormFieldComponent<T> implements ControlValueAccessor {
+  private cd = inject(ChangeDetectorRef);
+
   @Input() label = '';
   @Input() name = '';
   @Input() disabled = false;
 
   @Input() set value(val: T | undefined) {
-    if (val !== undefined && this._value !== val) {
+    if (this._value !== val) {
       this._value = val;
-      this.valueChange.emit(this._value);
+      this.valueChange.emit(this.value);
       this.onChanged(val);
       this.onTouched(val);
+      this.cd.detectChanges();
     }
   }
 
@@ -30,7 +33,7 @@ export abstract class FormFieldComponent<T> implements ControlValueAccessor {
   onTouched: Function = () => {};
 
   writeValue(value?: T): void {
-    this._value = value;
+    this.value = value;
   }
 
   registerOnChange(fn: Function): void {
