@@ -1,11 +1,22 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "docker-compose: up",
-            "type": "node",
-            "request": "launch",
-            "preLaunchTask": "docker-compose-up"
-        },
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "docker-compose: up",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "docker-compose-up"
+    },
+    {
+      "name": "debug Nest.js",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "sourceMaps": true,
+      "restart": true,
+      "localRoot": "${workspaceFolder}/backend",
+      "remoteRoot": "/app"
+    }
+  ]
 }
