@@ -30,6 +30,8 @@ services:
       # save the compiled node_modules to anonymous volume
       # to not attach the volume to our host node_modules
       - '/app/node_modules'
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/todos
 
   db:
     image: postgres:15.1

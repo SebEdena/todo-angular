@@ -46,14 +46,18 @@ export class CrudService<
 
   async find(params: Partial<FindParams<Entity>> = {}): Promise<Page<Entity>> {
     const { filter, offset, limit, orderBy } = { ...this.defaultFindParams, ...params };
-    const [items, total] = await this.em
-      .qb(this.name)
-      .where(filter)
-      .offset(offset)
-      .limit(limit)
-      .orderBy(orderBy)
-      .getResultAndCount();
-    return { items, total };
+    try {
+      const [items, total] = await this.em
+        .qb(this.name)
+        .where(filter)
+        .offset(offset)
+        .limit(limit)
+        .orderBy(orderBy)
+        .getResultAndCount();
+      return { items, total };
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async findOne(filter: FilterQuery<Entity> = {}): Promise<Entity | null> {
