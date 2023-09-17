@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { isUUID } from 'class-validator';
-import { AuditBase } from 'src/models/base';
+import { AuditBase } from 'src/models';
 import { CrudService } from './crud';
 
 export abstract class IdToValueInterceptor<

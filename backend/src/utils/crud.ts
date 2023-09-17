@@ -9,14 +9,8 @@ import {
 } from '@mikro-orm/core';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { AuditBase } from 'src/models';
-import { Page } from './utils';
-
-export type FindParams<Entity> = {
-  filter: FilterQuery<Entity>;
-  orderBy: QueryOrderMap<Entity>;
-  offset: number;
-  limit: number;
-};
+import { FindParams } from 'src/schemas';
+import { Page } from 'src/schemas/page.dto';
 
 export class CrudService<
   Entity extends AuditBase,

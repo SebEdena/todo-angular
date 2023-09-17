@@ -1,2 +1,2 @@
-export * from './base';
-export * from './todos';
+export * from './base.entity';
+export * from './todos.entity';
