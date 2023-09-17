@@ -1,6 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { log } from 'console';
-import { FindParams } from './crud';
+import { FindParams } from 'src/schemas/params.dto';
 
 @Injectable()
 export class FindParamsPipe<E> implements PipeTransform {
@@ -18,7 +17,6 @@ export class FindParamsPipe<E> implements PipeTransform {
     if (value.limit) {
       params.limit = Number.parseInt(value.limit);
     }
-    log(params);
     return params;
   }
 }

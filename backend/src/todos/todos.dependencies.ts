@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable, createParamDecorator } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Todo } from 'src/models';
-import { CreateTodo, ReadTodo } from 'src/schemas/todos';
+import { CreateTodo, ReadTodo } from 'src/schemas/todos.dto';
 import { IdToValueInterceptor } from '../utils/id-to-value.interceptor';
 import { TodosService } from './todos.service';
 

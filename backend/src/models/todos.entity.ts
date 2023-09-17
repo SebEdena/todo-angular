@@ -1,5 +1,5 @@
 import { Entity, Enum, Property } from '@mikro-orm/core';
-import { AuditBase } from './base';
+import { AuditBase } from './base.entity';
 
 @Entity()
 export class Todo extends AuditBase {
