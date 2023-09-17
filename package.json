@@ -6,9 +6,10 @@
     "lib/dist"
   ],
   "scripts": {
-    "init-lib": "(cd lib; npm i; npm run build)",
-    "install-all": "npm run init-lib && npm install --workspaces --if-present",
-    "build-all": "npm run init-lib && npm run build --workspaces --if-present"
+    "setup:lib": "(cd lib; npm i; npm run build)",
+    "setup:web": "(cd lib; npm i)",
+    "setup:api": "(cd lib; npm i)",
+    "setup": "npm i; npm-run-all --parallel setup:*"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
