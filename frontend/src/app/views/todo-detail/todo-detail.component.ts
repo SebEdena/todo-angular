@@ -19,7 +19,7 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
   selector: 'app-todo-detail',
   standalone: true,
   template: `
-    <h2>{{ id ? 'Edit Todo' : 'Create Todo' }}</h2>
+    <h2 class="pb-10">{{ id ? 'Edit Todo' : 'Create Todo' }}</h2>
     <app-spinner *ngIf="todoService.loading()" />
     <app-todo-form *ngIf="!todoService.loading()" [id]="id" [todo]="todo" />
   `,

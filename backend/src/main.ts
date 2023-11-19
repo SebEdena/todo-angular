@@ -13,7 +13,7 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(Logger));
-  app.enableCors({ origin: network.origins });
+  app.enableCors();
   app.enableShutdownHooks();
 
   if (env === 'local') {

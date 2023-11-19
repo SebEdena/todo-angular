@@ -6,7 +6,7 @@ export const config = () => {
     network: {
       host: process.env.HOST ?? '0.0.0.0',
       port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
-      origins: process.env.ORIGINS?.split(',') ?? ['http://localhost:4200'],
+      origins: process.env.ORIGINS?.split(',') ?? ['*'],
     },
     openapi: {
       prefix: 'openapi',

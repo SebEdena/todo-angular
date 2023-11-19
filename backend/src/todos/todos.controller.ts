@@ -29,7 +29,7 @@ export class TodosController {
    */
   @Get()
   @ApiPaginated(ReadTodo)
-  findAll(@Body(ValidationPipe, FindParamsPipe<Todo>) params: FindParams<Todo>) {
+  findAll(@Query(ValidationPipe, FindParamsPipe<Todo>) params: FindParams<Todo>) {
     return this.todosService.find(params);
   }
 

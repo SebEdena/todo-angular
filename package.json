@@ -7,8 +7,8 @@
   ],
   "scripts": {
     "setup:lib": "(cd lib; npm i; npm run build)",
-    "setup:web": "(cd lib; npm i)",
-    "setup:api": "(cd lib; npm i)",
+    "setup:web": "(cd frontend; npm i)",
+    "setup:api": "(cd backend; npm i)",
     "setup": "npm i; npm-run-all --parallel setup:*"
   },
   "devDependencies": {
