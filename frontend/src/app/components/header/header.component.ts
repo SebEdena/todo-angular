@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AddTodoButtonComponent } from '../add-todo-btn/add-todo-btn.component';
@@ -39,6 +38,6 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, ThemeSwitcherComponent, AddTodoButtonComponent],
+  imports: [RouterModule, ThemeSwitcherComponent, AddTodoButtonComponent],
 })
 export class HeaderComponent {}

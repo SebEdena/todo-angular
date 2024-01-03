@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TrackByFunction, inject } from '@angular/core';
 import { ReadTodo } from 'src/app/models/todos';
 import { TodoService } from 'src/app/services/todo.service';
@@ -11,7 +10,9 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="pb-5">
-      <app-todo-card *ngFor="let todo of todosService.items(); trackBy: trackTodos" [todo]="todo" />
+      @for (todo of todosService.items(); track todo.id) {
+      <app-todo-card [todo]="todo" />
+      }
       <app-refresh-spinner />
     </section>
   `,
@@ -24,7 +25,7 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
       }
     `,
   ],
-  imports: [CommonModule, TodoCardComponent, RefreshSpinnerComponent],
+  imports: [TodoCardComponent, RefreshSpinnerComponent],
 })
 export class TodoListComponent {
   todosService = inject(TodoService);

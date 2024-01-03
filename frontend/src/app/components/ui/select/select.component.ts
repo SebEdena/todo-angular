@@ -21,7 +21,9 @@ import { FormFieldComponent } from '../form-field/form-field.component';
       (clickOutside)="!disabled && dropdownOpen && closeDropdown()"
       [ngClass]="{ 'dropdown-open': dropdownOpen }"
     >
-      <label *ngIf="label" [for]="name">{{ label }}</label>
+      @if (label) {
+      <label [for]="name">{{ label }}</label>
+      }
       <div>
         <input
           readonly
@@ -36,14 +38,15 @@ import { FormFieldComponent } from '../form-field/form-field.component';
         </button>
         <div class="dropdown-ct">
           <ul class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen">
+            @for (o of options; track o) {
             <li
-              *ngFor="let o of options"
               [ngClass]="{ selected: value === o }"
               tabindex="0"
               (click)="!disabled && select(o)"
               role="option"
               [innerHTML]="o"
             ></li>
+            }
           </ul>
         </div>
       </div>

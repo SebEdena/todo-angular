@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -63,7 +62,6 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     SelectComponent,
     InputComponent,

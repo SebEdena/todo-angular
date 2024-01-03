@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormFieldComponent } from '../form-field/form-field.component';
@@ -6,7 +5,7 @@ import { FormFieldComponent } from '../form-field/form-field.component';
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

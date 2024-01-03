@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-spinner',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <svg
       fill="var(--primary)"

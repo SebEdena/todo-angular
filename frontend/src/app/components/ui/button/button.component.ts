@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <button
       [style.--bg-color]="'var(--' + color + ')'"

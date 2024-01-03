@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
@@ -23,6 +22,6 @@ import { HeaderComponent } from './components/header/header.component';
       }
     `,
   ],
-  imports: [CommonModule, RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent],
 })
 export class AppComponent {}

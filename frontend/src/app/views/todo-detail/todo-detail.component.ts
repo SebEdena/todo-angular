@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,12 +19,15 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
   standalone: true,
   template: `
     <h2 class="pb-10">{{ id ? 'Edit Todo' : 'Create Todo' }}</h2>
-    <app-spinner *ngIf="todoService.loading()" />
-    <app-todo-form *ngIf="!todoService.loading()" [id]="id" [todo]="todo" />
+    @if (todoService.loading()) {
+    <app-spinner />
+    } @else {
+    <app-todo-form [id]="id" [todo]="todo" />
+    }
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, TodoFormComponent, SpinnerComponent],
+  imports: [ReactiveFormsModule, TodoFormComponent, SpinnerComponent],
 })
 export class TodoDetailComponent implements OnChanges {
   private router = inject(Router);
