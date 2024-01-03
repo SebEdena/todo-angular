@@ -22,7 +22,7 @@ import { FormFieldComponent } from '../form-field/form-field.component';
       [ngClass]="{ 'dropdown-open': dropdownOpen }"
     >
       @if (label) {
-      <label [for]="name">{{ label }}</label>
+        <label [for]="name">{{ label }}</label>
       }
       <div>
         <input
@@ -39,13 +39,13 @@ import { FormFieldComponent } from '../form-field/form-field.component';
         <div class="dropdown-ct">
           <ul class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen">
             @for (o of options; track o) {
-            <li
-              [ngClass]="{ selected: value === o }"
-              tabindex="0"
-              (click)="!disabled && select(o)"
-              role="option"
-              [innerHTML]="o"
-            ></li>
+              <li
+                [ngClass]="{ selected: value === o }"
+                tabindex="0"
+                (click)="!disabled && select(o)"
+                role="option"
+                [innerHTML]="o"
+              ></li>
             }
           </ul>
         </div>
@@ -53,72 +53,69 @@ import { FormFieldComponent } from '../form-field/form-field.component';
     </div>
   `,
   styleUrls: ['../ui.scss'],
-  styles: [
-    `
-      @use 'sass:color';
-      @use 'modules/theme' as *;
-      .form-field {
-        position: relative;
+  styles: `
+    .form-field {
+      position: relative;
 
-        & input,
-        & .icon {
-          cursor: pointer;
-        }
-
-        .icon {
-          position: absolute;
-          right: 0;
-          top: calc(50% + 0.1em);
-          background-color: transparent;
-          border-radius: 100px;
-
-          &:hover {
-            background-color: color.adjust(t('primary'), $alpha: -0.5);
-          }
-        }
+      & input,
+      & .icon {
+        cursor: pointer;
       }
 
-      .dropdown-ct {
-        display: none;
+      .icon {
         position: absolute;
-        inset: 100% 0 0 0.5em;
-        z-index: 10;
-      }
+        right: 0;
+        top: calc(50% + 0.1em);
+        background-color: transparent;
+        border-radius: 100px;
 
-      .dropdown-open {
-        .dropdown-ct {
-          display: block;
-        }
-
-        .icon i {
-          rotate: 180deg;
+        &:hover {
+          --bg-hover: color-mix(in srgb, transparent, var(--primary) 50%)
+          background-color: color-mix(in srgb, transparent, var(--primary) 50%);
         }
       }
+    }
 
-      .dropdown-list {
-        background: var(--neutral);
-        border: 3px solid var(--primary);
-        border-radius: 10px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    .dropdown-ct {
+      display: none;
+      position: absolute;
+      inset: 100% 0 0 0.5em;
+      z-index: 10;
+    }
 
-        li {
-          padding: 4px 16px;
-          cursor: pointer;
-          transition: none;
+    .dropdown-open {
+      .dropdown-ct {
+        display: block;
+      }
 
-          &.selected {
-            background: var(--primary);
-          }
+      .icon i {
+        rotate: 180deg;
+      }
+    }
 
-          &:hover {
-            background: var(--primary);
-          }
+    .dropdown-list {
+      background: var(--neutral);
+      border: 3px solid var(--primary);
+      border-radius: 10px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 4px 16px;
+        cursor: pointer;
+        transition: none;
+
+        &.selected {
+          background: var(--primary);
+        }
+
+        &:hover {
+          background: var(--primary);
         }
       }
-    `,
-  ],
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent extends FormFieldComponent<string> {

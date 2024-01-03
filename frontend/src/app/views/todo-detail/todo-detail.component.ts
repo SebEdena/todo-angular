@@ -20,12 +20,11 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
   template: `
     <h2 class="pb-10">{{ id ? 'Edit Todo' : 'Create Todo' }}</h2>
     @if (todoService.loading()) {
-    <app-spinner />
+      <app-spinner />
     } @else {
-    <app-todo-form [id]="id" [todo]="todo" />
+      <app-todo-form [id]="id" [todo]="todo" />
     }
   `,
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, TodoFormComponent, SpinnerComponent],
 })
@@ -45,7 +44,7 @@ export class TodoDetailComponent implements OnChanges {
       const todo = await this.todoService.get(this.id);
       if (todo) {
         this.todo = todo;
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       } else {
         this.router.navigate([]);
       }

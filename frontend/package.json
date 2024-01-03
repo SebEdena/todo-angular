@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "ng build",
+    "format": "npx prettier -w .",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",
@@ -19,6 +20,8 @@
     "@angular/platform-browser-dynamic": "^17.0.8",
     "@angular/router": "^17.0.8",
     "@ngneat/query": "^1.0.0-beta.19",
+    "masonry-layout": "^4.2.2",
+    "ngx-masonry": "^14.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -35,6 +38,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-mocks": "^14.11.0",
+    "prettier": "^3.1.1",
     "typescript": "~5.2.2"
   }
 }

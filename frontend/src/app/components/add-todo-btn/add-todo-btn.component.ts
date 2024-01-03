@@ -10,7 +10,6 @@ import { RouterModule } from '@angular/router';
       <span class="icon-plus icon-size-15"></span>
     </button>
   `,
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddTodoButtonComponent {}

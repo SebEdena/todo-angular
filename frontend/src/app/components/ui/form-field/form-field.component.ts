@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 @Component({
   template: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export abstract class FormFieldComponent<T> implements ControlValueAccessor {
   @Input() label = '';

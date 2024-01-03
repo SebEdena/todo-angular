@@ -15,28 +15,26 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
       </span>
     </header>
   `,
-  styles: [
-    `
-      header {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+  styles: `
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      --bg-color-light: color-mix(in srgb, transparent, #fff 30%);
+      --bg-color-lighter: color-mix(in srgb, transparent, #fff 20%);
+
+      &:hover {
+        background-color: var(--bg-color-light);
       }
 
-      button {
-        --bg-color-light: color-mix(in srgb, transparent, #fff 30%);
-        --bg-color-lighter: color-mix(in srgb, transparent, #fff 20%);
-
-        &:hover {
-          background-color: var(--bg-color-light);
-        }
-
-        &:active {
-          background-color: var(--bg-color-lighter);
-        }
+      &:active {
+        background-color: var(--bg-color-lighter);
       }
-    `,
-  ],
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, ThemeSwitcherComponent, AddTodoButtonComponent],
 })

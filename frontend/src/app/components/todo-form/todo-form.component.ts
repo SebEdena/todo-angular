@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -36,30 +37,28 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
       </form>
     </div>
   `,
-  styles: [
-    `
-      .form-container {
-        background: var(--primary);
-        background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+  styles: `
+    .form-container {
+      background: var(--primary);
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
 
-        border-radius: 15px;
-        padding: 10px;
-      }
+      border-radius: 15px;
+      padding: 10px;
+    }
 
-      form {
-        display: flex;
-        flex-flow: column wrap;
-        gap: 10px;
-        padding: 10px;
-        border-radius: 10px;
-      }
+    form {
+      display: flex;
+      flex-flow: column wrap;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 10px;
+    }
 
-      app-button {
-        margin-top: 5px;
-        align-self: flex-end;
-      }
-    `,
-  ],
+    app-button {
+      margin-top: 5px;
+      align-self: flex-end;
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
@@ -87,6 +86,7 @@ export class TodoFormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['todo']) {
       this.todoForm.patchValue(this.todo);
+      inject(ChangeDetectorRef).markForCheck();
     }
   }
 

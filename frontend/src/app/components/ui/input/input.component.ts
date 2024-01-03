@@ -20,7 +20,6 @@ import { FormFieldComponent } from '../form-field/form-field.component';
     </div>
   `,
   styleUrls: ['../ui.scss'],
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent extends FormFieldComponent<string | number> {

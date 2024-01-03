@@ -8,7 +8,7 @@ describe('ThemeSwitcherComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ThemeSwitcherComponent]
+      imports: [ThemeSwitcherComponent],
     });
     fixture = TestBed.createComponent(ThemeSwitcherComponent);
     component = fixture.componentInstance;

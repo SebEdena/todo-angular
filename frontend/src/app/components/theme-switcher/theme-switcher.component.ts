@@ -11,7 +11,6 @@ import { Theme, ThemeService } from 'src/app/services/theme.service';
       <span class="icon-size-15" [ngClass]="iconClass()"></span>
     </button>
   `,
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSwitcherComponent {

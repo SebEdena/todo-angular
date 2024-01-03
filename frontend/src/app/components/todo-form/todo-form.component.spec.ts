@@ -8,7 +8,7 @@ describe('TodoFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TodoFormComponent]
+      imports: [TodoFormComponent],
     });
     fixture = TestBed.createComponent(TodoFormComponent);
     component = fixture.componentInstance;

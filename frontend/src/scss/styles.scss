@@ -17,5 +17,7 @@ button {
 }
 
 :root.theme-loaded * {
-  transition: background-color 1s, color;
+  transition:
+    background-color 1s,
+    color;
 }

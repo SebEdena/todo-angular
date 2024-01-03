@@ -8,7 +8,7 @@ describe('RefreshSpinnerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RefreshSpinnerComponent]
+      imports: [RefreshSpinnerComponent],
     });
     fixture = TestBed.createComponent(RefreshSpinnerComponent);
     component = fixture.componentInstance;

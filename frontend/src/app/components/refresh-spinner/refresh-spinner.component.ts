@@ -8,22 +8,20 @@ import { SpinnerComponent } from '../ui/spinner/spinner.component';
   standalone: true,
   template: `
     @if (!todoService.fullyLoaded()) {
-    <div
-      class="w-full p-20 flex-center"
-      inViewport
-      (visibleInViewport)="todoService.loadNextPage()"
-    >
-      <app-spinner />
-    </div>
+      <div
+        class="w-full p-20 flex-center"
+        inViewport
+        (visibleInViewport)="todoService.loadNextPage()"
+      >
+        <app-spinner />
+      </div>
     }
   `,
-  styles: [
-    `
-      :host {
-        grid-column: 1 / -1;
-      }
-    `,
-  ],
+  styles: `
+    :host {
+      grid-column: 1 / -1;
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [InViewportDirective, SpinnerComponent],
 })
