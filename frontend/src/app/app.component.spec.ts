@@ -8,8 +8,7 @@ describe('AppComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [provideRouter([])],
-      declarations: [MockComponent(HeaderComponent)],
-      imports: [AppComponent],
+      imports: [AppComponent, MockComponent(HeaderComponent)],
     }),
   );
 

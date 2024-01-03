@@ -18,7 +18,10 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "paths": {
+      "@lib": ["../lib"]
+    }
   },
   "include": ["src/**/*.ts"]
 }
