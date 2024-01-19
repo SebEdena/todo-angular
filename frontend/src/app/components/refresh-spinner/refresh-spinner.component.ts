@@ -13,7 +13,7 @@ import { SpinnerComponent } from '../ui/spinner/spinner.component';
         inViewport
         (visibleInViewport)="todoService.loadNextPage()"
       >
-        <app-spinner />
+        <!-- <app-spinner /> -->
       </div>
     }
   `,
