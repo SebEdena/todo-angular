@@ -6,6 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
   inject,
+  input,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
@@ -74,6 +75,7 @@ export class TodoFormComponent implements OnChanges {
 
   todoStatusList = Object.values(TodoStatus);
 
+  id = input.required();
   @Input() id?: string = undefined;
   @Input({ required: true }) todo!: CreateTodo | UpdateTodo;
 

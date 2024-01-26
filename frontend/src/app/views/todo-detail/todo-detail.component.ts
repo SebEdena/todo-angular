@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
   OnChanges,
   SimpleChanges,
   inject,
+  input,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,11 +18,11 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
   selector: 'app-todo-detail',
   standalone: true,
   template: `
-    <h2 class="pb-10">{{ id ? 'Edit Todo' : 'Create Todo' }}</h2>
+    <h2 class="pb-10">{{ id() ? 'Edit Todo' : 'Create Todo' }}</h2>
     @if (todoService.loading()) {
       <app-spinner />
     } @else {
-      <app-todo-form [id]="id" [todo]="todo" />
+      <app-todo-form [id]="id()" [todo]="todo" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,7 +35,7 @@ export class TodoDetailComponent implements OnChanges {
 
   todoStatusList = Object.values(TodoStatus);
 
-  @Input() id?: string;
+  id = input<string | undefined>(undefined);
 
   todo!: CreateTodo | UpdateTodo;
 
