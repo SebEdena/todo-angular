@@ -1,17 +1,21 @@
-import { Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, effect, inject, input } from '@angular/core';
 
 @Directive({
   selector: '[repeat]',
-  standalone: true
+  standalone: true,
 })
 export class RepeatDirective<T> {
-
   private templateRef = inject(TemplateRef<T>);
   private viewContainer = inject(ViewContainerRef);
 
-  @Input({ required: true }) set repeat(times: number) {
-    for(let i = 0; i < times; i++) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    }
+  repeat = input<number>(1);
+
+  constructor() {
+    effect(() => {
+      this.viewContainer.clear();
+      for (let i = 0; i < this.repeat(); i++) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
+    });
   }
 }

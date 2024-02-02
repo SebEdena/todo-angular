@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
 import { TodoService } from 'src/app/services/todo.service';
@@ -34,7 +25,7 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
           label="Status"
           name="status"
         ></app-select>
-        <app-button type="submit">{{ id ? 'Update' : 'Create' }}</app-button>
+        <app-button type="submit">{{ id() ? 'Update' : 'Create' }}</app-button>
       </form>
     </div>
   `,
@@ -69,15 +60,14 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
     ButtonComponent,
   ],
 })
-export class TodoFormComponent implements OnChanges {
+export class TodoFormComponent {
   private fb = inject(FormBuilder);
   private todoService = inject(TodoService);
 
   todoStatusList = Object.values(TodoStatus);
 
-  id = input.required();
-  @Input() id?: string = undefined;
-  @Input({ required: true }) todo!: CreateTodo | UpdateTodo;
+  id = input<string | undefined>(undefined);
+  todo = input.required<CreateTodo | UpdateTodo>();
 
   todoForm = this.fb.group({
     title: this.fb.nonNullable.control<string>('', Validators.required),
@@ -85,16 +75,16 @@ export class TodoFormComponent implements OnChanges {
     status: this.fb.nonNullable.control<TodoStatus>(TodoStatus.TODO, Validators.required),
   });
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['todo']) {
-      this.todoForm.patchValue(this.todo);
-      inject(ChangeDetectorRef).markForCheck();
-    }
+  constructor() {
+    effect(() => {
+      this.todoForm.patchValue(this.todo());
+    });
   }
 
   saveForm() {
-    if (this.id) {
-      this.todoService.update(this.id, this.todoForm.getRawValue());
+    const id = this.id();
+    if (id) {
+      this.todoService.update(id, this.todoForm.getRawValue());
     } else {
       this.todoService.create(this.todoForm.getRawValue());
     }

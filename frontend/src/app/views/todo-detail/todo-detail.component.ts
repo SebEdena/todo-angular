@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  SimpleChanges,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
@@ -22,32 +14,33 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
     @if (todoService.loading()) {
       <app-spinner />
     } @else {
-      <app-todo-form [id]="id()" [todo]="todo" />
+      <app-todo-form [id]="id()" [todo]="todo()" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, TodoFormComponent, SpinnerComponent],
 })
-export class TodoDetailComponent implements OnChanges {
+export class TodoDetailComponent {
   private router = inject(Router);
-  private cdRef = inject(ChangeDetectorRef);
   todoService = inject(TodoService);
 
   todoStatusList = Object.values(TodoStatus);
 
-  id = input<string | undefined>(undefined);
+  id = input<string>();
+  todo = signal<CreateTodo | UpdateTodo>({ title: '', description: '', status: TodoStatus.TODO });
 
-  todo!: CreateTodo | UpdateTodo;
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes['id'] && this.id) {
-      const todo = await this.todoService.get(this.id);
-      if (todo) {
-        this.todo = todo;
-        this.cdRef.markForCheck();
-      } else {
-        this.router.navigate([]);
+  constructor() {
+    effect(() => {
+      const id = this.id();
+      if (id) {
+        this.todoService.get(id).subscribe((t) => {
+          if (t) {
+            this.todo.set(t);
+          } else {
+            this.router.navigate([]);
+          }
+        });
       }
-    }
+    });
   }
 }

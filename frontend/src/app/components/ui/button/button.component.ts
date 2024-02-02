@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -38,9 +38,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
-  @Input() color: 'primary' | 'secondary' = 'primary';
-  @Input() type: 'button' | 'menu' | 'submit' | 'reset' = 'button';
-  @Input() disabled = false;
+  color = input<'primary' | 'secondary'>('primary');
+  type = input<'button' | 'menu' | 'submit' | 'reset'>('button');
+  disabled = input<boolean>(false);
 
   @Output() click = new EventEmitter<MouseEvent>();
 }

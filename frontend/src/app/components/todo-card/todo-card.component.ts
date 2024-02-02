@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReadTodo } from 'src/app/models/todos';
 
@@ -10,10 +10,10 @@ import { ReadTodo } from 'src/app/models/todos';
   template: `
     <article (click)="open()">
       <div class="bg-neutral-accent p-10">
-        <h2 class="title font-size-12">{{ todo.title }}</h2>
-        <p class="description">{{ todo.description }}</p>
-        <span class="date font-size-8">{{ todo.updatedAt | date: 'medium' }}</span>
-        <span class="status font-size-8">{{ todo.status | uppercase }}</span>
+        <h2 class="title font-size-12">{{ todo().title }}</h2>
+        <p class="description">{{ todo().description }}</p>
+        <span class="date font-size-8">{{ todo().updatedAt | date: 'medium' }}</span>
+        <span class="status font-size-8">{{ todo().status | uppercase }}</span>
       </div>
     </article>
   `,
@@ -60,9 +60,9 @@ import { ReadTodo } from 'src/app/models/todos';
 export class TodoCardComponent {
   private router = inject(Router);
 
-  @Input({ required: true }) todo!: ReadTodo;
+  todo = input.required<ReadTodo>();
 
   open() {
-    this.router.navigate(['todos', this.todo.id]);
+    this.router.navigate(['todos', this.todo().id]);
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { ReadTodo } from '../models/todos';
 import { Page } from '../models/utils';
 import { QueryParams, q } from '../utils/filter';
@@ -110,12 +110,12 @@ export abstract class CrudService<Read extends { id: string }, Create, Update> {
       });
   }
 
-  async get(id: string) {
-    let itemInCache = this.items().find((item) => item.id === id);
+  get(id: string) {
+    const itemInCache = this.items().find((item) => item.id === id);
     if (!itemInCache) {
-      return await firstValueFrom(this.http.get<Read>(`${this.baseUrl}/${id}`));
+      return this.http.get<Read>(`${this.baseUrl}/${id}`).pipe(catchError(() => of(undefined)));
     }
-    return itemInCache;
+    return of(itemInCache);
   }
 
   create(item: Create) {
