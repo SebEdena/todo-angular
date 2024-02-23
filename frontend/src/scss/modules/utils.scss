@@ -32,7 +32,7 @@
   justify-content: center;
 }
 
-@for $i from 1 through 80 {
+@for $i from 0 through 80 {
   .m-#{$i} {
     margin: math.div($i, 10) + rem;
   }

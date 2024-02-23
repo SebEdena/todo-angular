@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+} from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 @Component({
@@ -6,11 +14,14 @@ import { ControlValueAccessor } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export abstract class FormFieldComponent<T> implements ControlValueAccessor {
+  private cdRef = inject(ChangeDetectorRef);
+
   @Input() label = '';
   @Input() name = '';
   @Input() disabled = false;
 
   @Input() set value(val: T | undefined) {
+    this.cdRef.markForCheck();
     if (val !== undefined && this._value !== val) {
       this._value = val;
       this.valueChange.emit(this._value);
@@ -31,7 +42,7 @@ export abstract class FormFieldComponent<T> implements ControlValueAccessor {
   onTouched: Function = () => {};
 
   writeValue(value?: T): void {
-    this._value = value;
+    this.value = value;
   }
 
   registerOnChange(fn: Function): void {

@@ -22,7 +22,7 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
       <ngx-masonry>
         @defer (on immediate) {
           @for (todo of todosService.items(); track todo.id) {
-            <app-todo-card ngxMasonryItem [todo]="todo" />
+            <app-todo-card ngxMasonryItem [todo]="todo" (delete)="removeTodo(todo.id)" />
           }
         } @placeholder {
           <ng-container *ngTemplateOutlet="placeholder"> </ng-container>
@@ -66,5 +66,9 @@ export class TodoListComponent implements AfterViewInit {
 
   getRandomHeight() {
     return `${100 + Math.random() * 100}px`;
+  }
+
+  removeTodo(id: string) {
+    this.todosService.delete(id);
   }
 }

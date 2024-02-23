@@ -30,17 +30,20 @@ export class TodoDetailComponent {
   todo = signal<CreateTodo | UpdateTodo>({ title: '', description: '', status: TodoStatus.TODO });
 
   constructor() {
-    effect(() => {
-      const id = this.id();
-      if (id) {
-        this.todoService.get(id).subscribe((t) => {
-          if (t) {
-            this.todo.set(t);
-          } else {
-            this.router.navigate([]);
-          }
-        });
-      }
-    });
+    effect(
+      () => {
+        const id = this.id();
+        if (id) {
+          this.todoService.get(id).subscribe((t) => {
+            if (t) {
+              this.todo.set(t);
+            } else {
+              this.router.navigate([]);
+            }
+          });
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 }

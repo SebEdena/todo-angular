@@ -44,6 +44,7 @@ export class CrudService<
       const [items, total] = await this.em
         .qb(this.name)
         .where(filter)
+        .where({ deletedAt: null })
         .offset(offset)
         .limit(limit)
         .orderBy(orderBy)
