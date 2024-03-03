@@ -12,6 +12,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([ApiInterceptor])),
     provideAnimations(),
-    importProvidersFrom(NgxMasonryModule)
+    importProvidersFrom(NgxMasonryModule),
   ],
 };

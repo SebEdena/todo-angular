@@ -12,7 +12,7 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
   standalone: true,
   template: `
     <div class="form-container">
-      <form class="bg-neutral" [formGroup]="todoForm" (submit)="saveForm()">
+      <form class="bg-neutral-accent" [formGroup]="todoForm" (submit)="saveForm()">
         <app-input formControlName="title" label="Title" name="title"></app-input>
         <app-textarea
           formControlName="description"
@@ -76,9 +76,12 @@ export class TodoFormComponent {
   });
 
   constructor() {
-    effect(() => {
-      this.todoForm.patchValue(this.todo());
-    });
+    effect(
+      () => {
+        this.todoForm.patchValue(this.todo());
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   saveForm() {

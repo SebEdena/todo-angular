@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  effect,
   inject,
+  input,
+  model,
 } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
@@ -16,33 +16,25 @@ import { ControlValueAccessor } from '@angular/forms';
 export abstract class FormFieldComponent<T> implements ControlValueAccessor {
   private cdRef = inject(ChangeDetectorRef);
 
-  @Input() label = '';
-  @Input() name = '';
-  @Input() disabled = false;
+  label = input('');
+  name = input('');
+  disabled = model(false);
 
-  @Input() set value(val: T | undefined) {
-    this.cdRef.markForCheck();
-    if (val !== undefined && this._value !== val) {
-      this._value = val;
-      this.valueChange.emit(this._value);
-      this.onChanged(val);
-      this.onTouched(val);
-    }
-  }
-
-  @Output() valueChange = new EventEmitter<T | undefined>();
-
-  get value() {
-    return this._value;
-  }
-
-  private _value?: T;
+  value = model<T | undefined>(undefined);
 
   onChanged: Function = () => {};
   onTouched: Function = () => {};
 
-  writeValue(value?: T): void {
-    this.value = value;
+  constructor() {
+    effect(() => {
+      this.cdRef.markForCheck();
+      this.onChanged(this.value());
+      this.onTouched(this.value());
+    });
+  }
+
+  writeValue(value: T): void {
+    this.value.set(value);
   }
 
   registerOnChange(fn: Function): void {
@@ -54,6 +46,6 @@ export abstract class FormFieldComponent<T> implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.disabled.set(isDisabled);
   }
 }

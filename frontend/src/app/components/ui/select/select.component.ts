@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ClickOutsideDirective } from 'src/app/utils/click-outside.directive';
 import { FormFieldComponent } from '../form-field/form-field.component';
@@ -21,16 +21,16 @@ import { FormFieldComponent } from '../form-field/form-field.component';
       (clickOutside)="!disabled && dropdownOpen && closeDropdown()"
       [ngClass]="{ 'dropdown-open': dropdownOpen }"
     >
-      @if (label) {
-        <label [for]="name">{{ label }}</label>
+      @if (label()) {
+        <label [for]="name">{{ label() }}</label>
       }
       <div>
         <input
           readonly
-          [disabled]="disabled"
+          [disabled]="disabled()"
           [(ngModel)]="value"
           [id]="name"
-          [name]="name"
+          [name]="name()"
           (focus)="!disabled && !dropdownOpen && openDropdown()"
         />
         <button class="icon" (click)="!disabled && !dropdownOpen && openDropdown()">
@@ -38,9 +38,9 @@ import { FormFieldComponent } from '../form-field/form-field.component';
         </button>
         <div class="dropdown-ct">
           <ul class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen">
-            @for (o of options; track o) {
+            @for (o of options(); track o) {
               <li
-                [ngClass]="{ selected: value === o }"
+                [ngClass]="{ selected: value() === o }"
                 tabindex="0"
                 (click)="!disabled && select(o)"
                 role="option"
@@ -119,7 +119,7 @@ import { FormFieldComponent } from '../form-field/form-field.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent extends FormFieldComponent<string> {
-  @Input() options: string[] = [];
+  options = input.required<string[]>();
 
   dropdownOpen = false;
 
@@ -132,7 +132,7 @@ export class SelectComponent extends FormFieldComponent<string> {
   }
 
   select(value: string) {
-    this.value = value;
+    this.value.set(value);
     this.closeDropdown();
   }
 }
