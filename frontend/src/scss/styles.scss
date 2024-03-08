@@ -21,3 +21,11 @@ button {
     background-color 1s,
     color;
 }
+
+:root {
+  color-scheme: light;
+
+  &.dark {
+    color-scheme: dark;
+  }
+}
