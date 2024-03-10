@@ -7,7 +7,7 @@ import {
   inject,
   viewChild,
 } from '@angular/core';
-import { NgxMasonryComponent, NgxMasonryModule, NgxMasonryOptions } from 'ngx-masonry';
+import { NgxMasonryComponent, NgxMasonryModule } from 'ngx-masonry';
 import { TodoService } from 'src/app/services/todo.service';
 import { RepeatDirective } from 'src/app/utils/repeat.directive';
 import { RefreshSpinnerComponent } from '../../components/refresh-spinner/refresh-spinner.component';
@@ -20,7 +20,7 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="pb-5">
-      <ngx-masonry [options]="masonryOpts" style="width: 100%;">
+      <ngx-masonry style="width: 100%;">
         @defer (on immediate) {
           @for (todo of todosService.items(); track todo.id) {
             <app-todo-card ngxMasonryItem [todo]="todo" (delete)="removeTodo(todo.id)" />
@@ -48,7 +48,7 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
       app-todo-card, .placeholder {
         width: clamp(500px, 50%, 800px); padding: 0.5em;
 
-        @container(width: < 800px)  {
+        @container(max-width: 1000px)  {
           width: 100%;
         }
       }
@@ -68,13 +68,6 @@ export class TodoListComponent implements AfterViewInit, OnDestroy {
   todosService = inject(TodoService);
 
   masonry = viewChild.required(NgxMasonryComponent);
-
-  masonryOpts: NgxMasonryOptions = {
-    // gutter: 20,
-    // horizontalOrder: true,
-    // fitWidth: true,
-    // containerStyle: { background: 'transparent' },
-  };
 
   ngAfterViewInit(): void {
     this.masonry().layout();
