@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs';
 import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
 import { TodoService } from 'src/app/services/todo.service';
 import { TodoFormComponent } from '../../components/todo-form/todo-form.component';
@@ -11,10 +13,10 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
   standalone: true,
   template: `
     <h2 class="pb-10">{{ id() ? 'Edit Todo' : 'Create Todo' }}</h2>
-    @if (todoService.loading()) {
+    @if (todoService.loading() || this.todo() === undefined) {
       <app-spinner />
     } @else {
-      <app-todo-form [id]="id()" [todo]="todo()" />
+      <app-todo-form [id]="id()" [todo]="todo()!" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,28 +24,28 @@ import { SpinnerComponent } from '../../components/ui/spinner/spinner.component'
 })
 export class TodoDetailComponent {
   private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+
   todoService = inject(TodoService);
 
   todoStatusList = Object.values(TodoStatus);
 
   id = input<string>();
-  todo = signal<CreateTodo | UpdateTodo>({ title: '', description: '', status: TodoStatus.TODO });
+  todo = toSignal(
+    this.activatedRoute.data.pipe(
+      takeUntilDestroyed(),
+      map((data: { todo?: CreateTodo | UpdateTodo }) => data.todo),
+    ),
+  );
+  todoLoadError = computed(() => !this.todo());
 
   constructor() {
-    effect(
-      () => {
-        const id = this.id();
-        if (id) {
-          this.todoService.get(id).subscribe((t) => {
-            if (t) {
-              this.todo.set(t);
-            } else {
-              this.router.navigate([]);
-            }
-          });
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    console.log('in constructor');
+
+    effect(() => {
+      if (this.todoLoadError()) {
+        this.router.navigate(['/todos']);
+      }
+    });
   }
 }

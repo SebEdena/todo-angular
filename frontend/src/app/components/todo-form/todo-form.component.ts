@@ -25,7 +25,7 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
           label="Status"
           name="status"
         ></app-select>
-        <app-button type="submit">{{ id() ? 'Update' : 'Create' }}</app-button>
+        <button type="submit">{{ id() ? 'Update' : 'Create' }}</button>
       </form>
     </div>
   `,
