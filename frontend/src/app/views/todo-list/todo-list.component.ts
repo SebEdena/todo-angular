@@ -3,8 +3,9 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ViewChild,
+  OnDestroy,
   inject,
+  viewChild,
 } from '@angular/core';
 import { NgxMasonryComponent, NgxMasonryModule } from 'ngx-masonry';
 import { TodoService } from 'src/app/services/todo.service';
@@ -19,7 +20,7 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="pb-5">
-      <ngx-masonry>
+      <ngx-masonry style="width: 100%;">
         @defer (on immediate) {
           @for (todo of todosService.items(); track todo.id) {
             <app-todo-card ngxMasonryItem [todo]="todo" (delete)="removeTodo(todo.id)" />
@@ -40,8 +41,16 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
   `,
   styles: `
     section {
+      ngx-masonry {
+        container-type: inline-size;
+      }
+
       app-todo-card, .placeholder {
-        width: 50%; padding: 0.5em;
+        width: clamp(500px, 50%, 800px); padding: 0.5em;
+
+        @container(max-width: 1000px)  {
+          width: 100%;
+        }
       }
     }
 
@@ -55,13 +64,14 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
     SkeletonComponent,
   ],
 })
-export class TodoListComponent implements AfterViewInit {
+export class TodoListComponent implements AfterViewInit, OnDestroy {
   todosService = inject(TodoService);
 
-  @ViewChild(NgxMasonryComponent) masonry!: NgxMasonryComponent;
+  masonry = viewChild.required(NgxMasonryComponent);
 
   ngAfterViewInit(): void {
-    this.masonry.layout();
+    this.masonry().layout();
+    window.addEventListener('resize', () => this.masonry().layout());
   }
 
   getRandomHeight() {
@@ -70,5 +80,9 @@ export class TodoListComponent implements AfterViewInit {
 
   removeTodo(id: string) {
     this.todosService.delete(id);
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', () => this.masonry().layout());
   }
 }
