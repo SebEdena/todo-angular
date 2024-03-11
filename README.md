@@ -1,15 +1,11 @@
 # Todo app
 
-Todo app made to test out a modern Angular / Nestjs stack :
-
-- Angular v16
-- Drizzle ORM
-- Zod
+Todo app made to test out a modern Angular / Nestjs stack
 
 ## Start the app
 
+### With docker-compose
+
 ```bash
 docker-compose up
-( cd backend ; npm i ; npm run start:dev )
-( cd frontend ; npm i ; npm start )
 ```
