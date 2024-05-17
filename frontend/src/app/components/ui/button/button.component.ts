@@ -6,9 +6,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output, input } from 
   imports: [],
   template: `
     <button
-      [style.--bg-color]="'var(--' + color + ')'"
-      [type]="type"
-      [disabled]="disabled"
+      [style.--bg-color]="'var(--' + color() + ')'"
+      [type]="type()"
+      [disabled]="disabled()"
       (click)="click.emit($event)"
     >
       <ng-content></ng-content>
