@@ -7,13 +7,15 @@ services:
       dockerfile: local.Dockerfile
     ports:
       - 4200:4200
-    volumes:
-      # link our project directory to the docker directory
-      # so any change will get updated in the running container
-      - ./frontend:/app
-      # save the compiled node_modules to anonymous volume
-      # to not attach the volume to our host node_modules
-      - /app/node_modules/
+    develop:
+      watch:
+        - path: ./frontend
+          action: sync
+          target: /app
+          ignore:
+            - node_modules/
+        - path: ./frontend/package.json
+          action: rebuild
 
   api:
     build:
@@ -22,16 +24,17 @@ services:
     ports:
       - 3000:3000
       - 9229:9229 # 9229 is the default node debug port
-    volumes:
-      # link our project directory to the docker directory
-      # so any change will get updated in the running container
-      # and also we will benefit from sourcemaps for debugging
-      - './backend:/app'
-      # save the compiled node_modules to anonymous volume
-      # to not attach the volume to our host node_modules
-      - '/app/node_modules'
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/todos
+    develop:
+      watch:
+        - path: ./backend
+          action: sync
+          target: /app
+          ignore:
+              - node_modules/
+        - path: ./backend/package.json
+          action: rebuild
 
   db:
     image: postgres:15.1
