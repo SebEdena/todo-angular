@@ -22,14 +22,14 @@ import { FormFieldComponent } from '../form-field/form-field.component';
       [ngClass]="{ 'dropdown-open': dropdownOpen }"
     >
       @if (label()) {
-        <label [for]="name">{{ label() }}</label>
+        <label [for]="name()">{{ label() }}</label>
       }
       <div>
         <input
           readonly
           [disabled]="disabled()"
           [(ngModel)]="value"
-          [id]="name"
+          [id]="name()"
           [name]="name()"
           (focus)="!disabled && !dropdownOpen && openDropdown()"
         />

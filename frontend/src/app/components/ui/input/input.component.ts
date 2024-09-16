@@ -15,9 +15,9 @@ import { FormFieldComponent } from '../form-field/form-field.component';
   ],
   template: `
     <div class="form-field">
-      <label [for]="name">{{ label() }}</label>
+      <label [for]="name()">{{ label() }}</label>
       <input
-        [type]="type"
+        [type]="type()"
         [id]="name()"
         [name]="name()"
         [(ngModel)]="value"
