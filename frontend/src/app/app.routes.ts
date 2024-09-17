@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { todoResolver } from './utils/todo.resolver';
 
 export const routes: Routes = [
   {
@@ -16,13 +15,11 @@ export const routes: Routes = [
     path: 'todos/new',
     loadComponent: () =>
       import('./views/todo-detail/todo-detail.component').then((m) => m.TodoDetailComponent),
-    resolve: { todo: todoResolver },
   },
   {
     path: 'todos/:id',
     loadComponent: () =>
       import('./views/todo-detail/todo-detail.component').then((m) => m.TodoDetailComponent),
-    resolve: { todo: todoResolver },
   },
   {
     path: '**',
