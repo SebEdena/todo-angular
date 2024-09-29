@@ -13,7 +13,7 @@ async function setup(text: string = 'Button') {
   return {
     fixture: fixture,
     component: fixture.componentInstance,
-    outputs: {
+    properties: {
       click: clickOutput,
     },
   };
@@ -22,10 +22,11 @@ async function setup(text: string = 'Button') {
 describe('ButtonComponent', () => {
   it('should emit the click event when clicked', async () => {
     const text = 'Button';
-    const { component, outputs } = await setup(text);
+    const { component, properties } = await setup(text);
     expect(component).toBeTruthy();
 
     fireEvent.click(screen.getByText(text));
-    expect(outputs.click).toHaveBeenCalled();
+    expect(screen.getByRole('button').textContent).toEqual(text);
+    expect(properties.click).toHaveBeenCalled();
   });
 });
