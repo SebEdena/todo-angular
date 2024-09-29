@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateTodo, TodoStatus, UpdateTodo } from 'src/app/models/todos';
-import { TodoService } from 'src/app/services/todo.service';
 import { ButtonComponent } from '../ui/button/button.component';
 import { InputComponent } from '../ui/input/input.component';
 import { SelectComponent } from '../ui/select/select.component';
@@ -25,7 +24,7 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
           label="Status"
           name="status"
         ></app-select>
-        <button type="submit">{{ id() ? 'Update' : 'Create' }}</button>
+        <button type="submit">{{ isNewTodo() ? 'Create' : 'Update' }}</button>
       </form>
     </div>
   `,
@@ -62,12 +61,13 @@ import { TextareaComponent } from '../ui/textarea/textarea.component';
 })
 export class TodoFormComponent {
   private fb = inject(FormBuilder);
-  private todoService = inject(TodoService);
 
   todoStatusList = Object.values(TodoStatus);
 
-  id = input<string | undefined>(undefined);
+  isNewTodo = input<boolean>(false);
   todo = input.required<CreateTodo | UpdateTodo>();
+
+  saveTodo = output<CreateTodo | UpdateTodo>();
 
   todoForm = this.fb.group({
     title: this.fb.nonNullable.control<string>('', Validators.required),
@@ -78,18 +78,15 @@ export class TodoFormComponent {
   constructor() {
     effect(
       () => {
-        this.todoForm.patchValue(this.todo());
+        if (this.todo()) {
+          this.todoForm.patchValue(this.todo());
+        }
       },
       { allowSignalWrites: true },
     );
   }
 
   saveForm() {
-    const id = this.id();
-    if (id) {
-      this.todoService.update(id, this.todoForm.getRawValue());
-    } else {
-      this.todoService.create(this.todoForm.getRawValue());
-    }
+    this.saveTodo.emit(this.todoForm.getRawValue());
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, signal } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { ReadTodo } from '../models/todos';
 import { Page } from '../models/utils';
 import { QueryParams, q } from '../utils/filter';
@@ -119,35 +119,44 @@ export abstract class CrudService<Read extends { id: string }, Create, Update> {
   }
 
   create(item: Create) {
-    this.http.post<Read>(this.baseUrl, item).subscribe({
-      next: () => {
-        this.refresh();
-      },
-      error: (err: any) => {
+    return this.http.post<Read>(this.baseUrl, item).pipe(
+      catchError((err: any) => {
         this.updateState({ error: err.message });
-      },
-    });
+        return of(err as Error);
+      }),
+      tap((result) => {
+        if (!(result instanceof Error)) {
+          this.refresh();
+        }
+      }),
+    );
   }
 
   update(id: string, item: Update) {
-    this.http.patch<Read>(`${this.baseUrl}/${id}`, item).subscribe({
-      next: () => {
-        this.refresh();
-      },
-      error: (err: any) => {
+    return this.http.patch<Read>(`${this.baseUrl}/${id}`, item).pipe(
+      catchError((err: any) => {
         this.updateState({ error: err.message });
-      },
-    });
+        return of(err as Error);
+      }),
+      tap((result) => {
+        if (!(result instanceof Error)) {
+          this.refresh();
+        }
+      }),
+    );
   }
 
   delete(id: string) {
-    this.http.delete<ReadTodo>(`${this.baseUrl}/${id}`).subscribe({
-      next: () => {
-        this.refresh();
-      },
-      error: (err: any) => {
+    return this.http.delete<ReadTodo>(`${this.baseUrl}/${id}`).pipe(
+      catchError((err: any) => {
         this.updateState({ error: err.message });
-      },
-    });
+        return of(err as Error);
+      }),
+      tap((result) => {
+        if (!(result instanceof Error)) {
+          this.refresh();
+        }
+      }),
+    );
   }
 }

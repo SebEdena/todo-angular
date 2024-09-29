@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, forwardRef, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ClickOutsideDirective } from 'src/app/utils/click-outside.directive';
 import { FormFieldComponent } from '../form-field/form-field.component';
@@ -18,31 +18,31 @@ import { FormFieldComponent } from '../form-field/form-field.component';
   template: `
     <div
       class="form-field"
-      (clickOutside)="!disabled && dropdownOpen && closeDropdown()"
-      [ngClass]="{ 'dropdown-open': dropdownOpen }"
+      (clickOutside)="!disabled() && dropdownOpen() && closeDropdown()"
+      [ngClass]="{ 'dropdown-open': dropdownOpen() }"
     >
       @if (label()) {
-        <label [for]="name">{{ label() }}</label>
+        <label [for]="name()">{{ label() }}</label>
       }
       <div>
         <input
           readonly
           [disabled]="disabled()"
           [(ngModel)]="value"
-          [id]="name"
+          [id]="name()"
           [name]="name()"
-          (focus)="!disabled && !dropdownOpen && openDropdown()"
+          (focus)="!disabled() && !dropdownOpen() && openDropdown()"
         />
-        <button class="icon" (click)="!disabled && !dropdownOpen && openDropdown()">
+        <button class="icon" (click)="!disabled() && !dropdownOpen() && openDropdown()">
           <i class="icon-chevron-down icon-size-12"></i>
         </button>
         <div class="dropdown-ct">
-          <ul class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen">
+          <ul class="dropdown-list" role="listbox" [attr.aria-expanded]="dropdownOpen()">
             @for (o of options(); track o) {
               <li
                 [ngClass]="{ selected: value() === o }"
                 tabindex="0"
-                (click)="!disabled && select(o)"
+                (click)="!disabled() && select(o)"
                 role="option"
                 [innerHTML]="o"
               ></li>
@@ -121,14 +121,14 @@ import { FormFieldComponent } from '../form-field/form-field.component';
 export class SelectComponent extends FormFieldComponent<string> {
   options = input.required<string[]>();
 
-  dropdownOpen = false;
+  dropdownOpen = signal(false);
 
   openDropdown() {
-    this.dropdownOpen = true;
+    this.dropdownOpen.set(true);
   }
 
   closeDropdown() {
-    this.dropdownOpen = false;
+    this.dropdownOpen.set(false);
   }
 
   select(value: string) {

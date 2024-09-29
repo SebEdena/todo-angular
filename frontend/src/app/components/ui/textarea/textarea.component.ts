@@ -15,8 +15,13 @@ import { FormFieldComponent } from '../form-field/form-field.component';
   ],
   template: `
     <div class="form-field">
-      <label [for]="name">{{ label() }}</label>
-      <textarea [id]="name" [name]="name()" [(ngModel)]="value" [disabled]="disabled()"></textarea>
+      <label [for]="name()">{{ label() }}</label>
+      <textarea
+        [id]="name()"
+        [name]="name()"
+        [(ngModel)]="value"
+        [disabled]="disabled()"
+      ></textarea>
     </div>
   `,
   styleUrls: ['../ui.scss'],
