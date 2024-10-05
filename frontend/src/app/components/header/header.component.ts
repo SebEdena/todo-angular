@@ -11,7 +11,7 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
       <h1 class="pointer" routerLink="/">My todos.</h1>
       <span>
         <app-add-todo-button />
-        <app-theme-switcher />
+        <app-theme-switcher ngSkipHydration />
       </span>
     </header>
   `,

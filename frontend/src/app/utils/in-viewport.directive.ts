@@ -1,4 +1,11 @@
-import { Directive, ElementRef, EventEmitter, OnDestroy, Output } from '@angular/core';
+import {
+  afterNextRender,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 
 @Directive({
   selector: '[inViewport]',
@@ -7,7 +14,7 @@ import { Directive, ElementRef, EventEmitter, OnDestroy, Output } from '@angular
 export class InViewportDirective implements OnDestroy {
   @Output() visibleInViewport = new EventEmitter<void>();
 
-  private observer: IntersectionObserver;
+  private observer?: IntersectionObserver;
 
   private callback: ConstructorParameters<typeof IntersectionObserver>[0] = (entries) =>
     entries
@@ -17,15 +24,17 @@ export class InViewportDirective implements OnDestroy {
       });
 
   constructor(private el: ElementRef) {
-    this.observer = new IntersectionObserver(this.callback, {
-      rootMargin: '30px',
-      threshold: 0.5,
-      root: null,
+    afterNextRender(() => {
+      this.observer = new IntersectionObserver(this.callback, {
+        rootMargin: '30px',
+        threshold: 0.5,
+        root: null,
+      });
+      this.observer.observe(this.el.nativeElement);
     });
-    this.observer.observe(this.el.nativeElement);
   }
 
   ngOnDestroy(): void {
-    this.observer.disconnect();
+    this.observer?.disconnect();
   }
 }

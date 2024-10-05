@@ -1,4 +1,5 @@
 @use 'reset';
+@use 'variables' as *;
 @use 'modules/theme';
 @use 'modules/fonts';
 @use 'modules/icons';
@@ -27,5 +28,9 @@ button {
 
   &.dark {
     color-scheme: dark;
+  }
+
+  @each $breakpoint, $value in $breakpoints {
+    --bp-#{$breakpoint}: #{$value};
   }
 }

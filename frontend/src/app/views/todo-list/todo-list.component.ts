@@ -5,9 +5,7 @@ import {
   Component,
   OnDestroy,
   inject,
-  viewChild,
 } from '@angular/core';
-import { NgxMasonryComponent, NgxMasonryModule } from 'ngx-masonry';
 import { TodoService } from 'src/app/services/todo.service';
 import { RepeatDirective } from 'src/app/utils/repeat.directive';
 import { RefreshSpinnerComponent } from '../../components/refresh-spinner/refresh-spinner.component';
@@ -20,43 +18,46 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="pb-5">
-      <ngx-masonry style="width: 100%;">
-        @defer (on immediate) {
-          @for (todo of todosService.items(); track todo.id) {
-            <app-todo-card ngxMasonryItem [todo]="todo" (delete)="removeTodo(todo.id)" />
-          }
-        } @placeholder {
-          <ng-container *ngTemplateOutlet="placeholder"> </ng-container>
-        } @loading (minimum 1000ms) {
-          <ng-container *ngTemplateOutlet="placeholder"> </ng-container>
+      <ul class="todo-container" role="list">
+        @for (todo of todosService.items(); track todo.id) {
+          <li class="todo-item">
+            <app-todo-card [todo]="todo" (delete)="removeTodo(todo.id)" />
+          </li>
         }
-        <ng-template #placeholder>
-          <div class="placeholder" *repeat="20" [style.height]="getRandomHeight()" ngxMasonryItem>
-            <app-skeleton />
-          </div>
-        </ng-template>
-      </ngx-masonry>
+      </ul>
+
       <app-refresh-spinner />
+      <ng-template #placeholder>
+        <div class="placeholder" *repeat="20" [style.height]="getRandomHeight()">
+          <app-skeleton />
+        </div>
+      </ng-template>
     </section>
   `,
   styles: `
     section {
-      ngx-masonry {
-        container-type: inline-size;
-      }
+      .todo-container {
+        --todo-container-gap: 2rem;
 
-      app-todo-card, .placeholder {
-        width: clamp(500px, 50%, 800px); padding: 0.5em;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--todo-container-gap);
+        justify-content: center;
+        padding-left: 0; 
+        margin: calc(-1 * var(--todo-container-gap) / 2);
 
-        @container(max-width: 1000px)  {
-          width: 100%;
+        .todo-item, .placeholder {
+          width: calc(50% - var(--todo-container-gap));
+          box-sizing: border-box;
+
+          @container(width > var(--bp-md)) {
+            width: 100%;
+          }
         }
       }
     }
-
   `,
   imports: [
-    NgxMasonryModule,
     NgTemplateOutlet,
     RepeatDirective,
     TodoCardComponent,
@@ -67,22 +68,15 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
 export class TodoListComponent implements AfterViewInit, OnDestroy {
   todosService = inject(TodoService);
 
-  masonry = viewChild.required(NgxMasonryComponent);
-
-  ngAfterViewInit(): void {
-    this.masonry().layout();
-    window.addEventListener('resize', () => this.masonry().layout());
-  }
+  ngAfterViewInit(): void {}
 
   getRandomHeight() {
-    return `${100 + Math.random() * 100}px`;
+    return `${200}px`;
   }
 
   removeTodo(id: string) {
     this.todosService.delete(id);
   }
 
-  ngOnDestroy(): void {
-    window.removeEventListener('resize', () => this.masonry().layout());
-  }
+  ngOnDestroy(): void {}
 }

@@ -24,6 +24,7 @@ import { SpinnerComponent } from '../ui/spinner/spinner.component';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [InViewportDirective, SpinnerComponent],
+  host: { ngSkipHydration: 'true' },
 })
 export class RefreshSpinnerComponent {
   todoService = inject(TodoService);

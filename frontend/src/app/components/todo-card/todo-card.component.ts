@@ -35,6 +35,7 @@ import { IconButtonComponent } from '../icon-button/icon-button.component';
         cursor: pointer;
         border-radius: 8px;
         box-shadow: 3px 3px var(--primary);
+        height: 100%;
       }
 
       &:hover > div {
@@ -51,7 +52,7 @@ import { IconButtonComponent } from '../icon-button/icon-button.component';
           'date status';
         gap: 0.5rem;
         grid-template-columns: 1fr max-content;
-        grid-template-rows: auto;
+        grid-template-rows: auto 1fr auto;
         $areas: 'title', 'actions', 'description', 'date', 'status';
 
         @each $area in $areas {
