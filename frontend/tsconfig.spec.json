@@ -1,10 +1,16 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "src",
     "outDir": "./out-tsc/spec",
     "esModuleInterop": true,
-    "types": ["jest"]
+    "emitDecoratorMetadata": true,
+    "types": ["vitest/globals"],
+    "paths": {
+      "src/*": ["./*"]
+    },
+    "target": "es2016"
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
+  "files": ["src/test-setup.ts"]
 }
